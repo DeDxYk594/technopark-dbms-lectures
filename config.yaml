@@ -15,8 +15,8 @@ markup:
       unsafe: true
 
 params:
-  author: "Стрелков Никита"
-  email: "nikita.strelkov@gmail.com"
+  author: "Алехин Владислав"
+  email: "v.alehin@corp.mail.ru"
   description: "Лекции для Технопарка по курсу СУБД"
   highlightTheme: "idea"
   useMath: false
