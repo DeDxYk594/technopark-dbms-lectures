@@ -1331,7 +1331,7 @@ COMMIT
     <h2>Уровни изолированности транзакций</h2>
     <ul class="compact">
         <li>Read uncommitted - чтение незафиксированных данных</li>
-        <li>Read committed (по-умолчанию) - чтение фиксированных данных</li>
+        <li>Read committed (по умолчанию) - чтение фиксированных данных</li>
         <li>Repeatable read - повторяемость чтения</li>
         <li>Serializable - упорядочиваемость</li>
     </ul>
@@ -1350,7 +1350,7 @@ COMMIT
         <tr>
             <td>Read&nbsp;uncommited</td>
             <td class="tx-g">не&nbsp;возможно</td>
-            <td class="tx-y">допускается</td>
+            <td class="tx-y">допускается *</td>
             <td class="tx-r">возможно</td>
             <td class="tx-r">возможно</td>
             <td class="tx-r">возможно</td>
@@ -1368,7 +1368,7 @@ COMMIT
             <td class="tx-g">не&nbsp;возможно</td>
             <td class="tx-g">не&nbsp;возможно</td>
             <td class="tx-g">не&nbsp;возможно</td>
-            <td class="tx-y">допускается</td>
+            <td class="tx-y">допускается *</td>
             <td class="tx-r">возможно</td>
         </tr>
         <tr>
@@ -1381,13 +1381,31 @@ COMMIT
         </tr>
         </tbody>
     </table>
+    <p>* Стандарт SQL99 не гарантирует отсутствие аномалии, но PostgreSQL гарантирует</p>
     <footer class="footer">https://technet.microsoft.com/en-us/library/cc546518.aspx</footer>
+</section>
+
+<section class="slide">
+    <h2>Уровни изолированности транзакций в PostgreSQL</h2>
+    <ul class="compact">
+        <li>Read Uncommitted - никаких мер по изоляции не принимается; просто надеемся, что аномалии не возникнут</li>
+        <li>Read Committed (по умолчанию) - транзакция не может читать промежуточные результаты незафиксированной транзакции</li>
+        <li>Repeatable Read - реализуется с помощью MVCC</li>
+        <li>Serializable - состояние системы всегда эквивалентно такому, к которому можно прийти, если транзакции были выполнены последовательно. Есть три способа реализации:
+            <ul>
+                <li>По-настоящему последовательное выполнение</li>
+                <li>Пессимистические блокировки (Explicit Locking, 2PL)</li>
+                <li>Оптимистические блокировки (SSI)</li>
+            </ul>
+        </li>
+    </ul>
 </section>
 
 <section class="slide">
     <h2>Потерянное обновление (Lost Update)</h2>
     <p>Потерянное обновление происходит в случае перезатирания изменений другой транзакцией до завершения транзакции,
         сделавшей изменения.</p>
+    <p>PostgreSQL автоматически накладывает блокировки на изменённые строки</p>
     <table class="classic bordered">
         <thead>
         <tr>
