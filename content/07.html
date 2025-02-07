@@ -357,6 +357,20 @@ description: |
 </section>
 
 <section class="slide">
+    <h2>Стемизация</h2>
+    <p><dfn>Стемизация</dfn> - преобразование фрагмента, при котором из слова удаляется его форма.</p>
+    <p><code>{'Мама', 'мыла', 'раму'} -> {'мама', 'мыть', 'рама'}</code></p>
+    <p>Стемизаторы бывают двух видов:
+        <ul>
+            <li>Алгоритмические (Snowball, NLTK) - работают на основе эвристик;</li>
+            <li>Словарные (ispell) - работают на основе словаря. В зависимости от полноты
+                и качества словаря он может быть или лучше, или хуже алгоритмического.
+            </li>
+        </ul>
+    </p>
+</section>
+
+<section class="slide">
     <h2>Словари в PostgreSQL</h2>
     <p>Создавая словари, можно:</p>
     <ul>
@@ -508,6 +522,24 @@ SET fts = setweight(to_tsvector(title), 'A')
 
 </code><code class="sql">SELECT * FROM documents WHERE fts @@ to_tsquery('модем');
 </code></pre>
+</section>
+
+<section class="slide">
+    <h2>Нечёткий поиск</h2>
+    <p>Не всегда пользователь вводит текст без опечаток. Нечёткий поиск нужен, чтобы искать похожие
+    слова.</p>
+    <p>Вместе с PostgreSQL поставляется расширение для триграммного поиска - <code>pg_trgm</code>.</p>
+    <p>Триграммный поиск хорошо подходит для поиска названия фильмов:</p>
+    <pre ><code class="sql">CREATE EXTENSION pg_trgm;
+
+SELECT * FROM movies WHERE title % 'roben good adventures';
+-- Adventures of Robin Hood, The (1938)
+    </code></pre>
+</section>
+
+<section class="slide">
+    <h2>Воронка поисковой системы</h2>
+    <img src="search.svg" style="width: 100%" />
 </section>
 
 <section class="slide">
