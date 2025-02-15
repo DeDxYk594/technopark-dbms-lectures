@@ -543,6 +543,29 @@ SELECT * FROM movies WHERE title % 'roben good adventures';
 </section>
 
 <section class="slide">
+    <h2>Хранение больших атрибутов</h2>
+    <p>Размер страницы ограничен 8 КиБ, а один кортеж не может выходить за рамки страницы, поэтому
+    непосредственно хранить большой текст невозможно.
+    </p>
+    <p>В PostgreSQL существует The Oversized-Attribute Storage Technique (TOAST) - методика
+    хранения больших атрибутов.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Хранение больших атрибутов</h2>
+    <p>Настройка режима TOAST для колонки:</p>
+    <pre><code class="sql">ALTER TABLE name ALTER COLUMN name SET STORAGE {
+    PLAIN    -- Нет сжатия,  нет внешнего хранения
+  | EXTENDED -- Есть сжатие, есть внешнее хранение
+  | EXTERNAL -- Нет сжатия,  есть внешнее хранение
+  | MAIN     -- Есть сжатие, нет внешнего хранения
+}
+    </code></pre>
+    <p>Внешнее хранение допускает размер до 1 ГиБ.</p>
+</section>
+
+<section class="slide">
     <h2 class="shout">Географические данные</h2>
 </section>
 
